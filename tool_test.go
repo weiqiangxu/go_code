@@ -95,3 +95,68 @@ func Test_testRange(t *testing.T) {
 		})
 	}
 }
+
+func Test_testGetPrivate(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testGetPrivate()
+		})
+	}
+}
+
+func Test_deferNumber(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			deferNumber()
+		})
+	}
+}
+
+func Test_testSwitch(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testSwitch()
+		})
+	}
+}
+
+func Test_testRuneTrans(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testRuneTrans()
+		})
+	}
+}
+
+func Test_testMapper(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testMapper()
+		})
+	}
+}

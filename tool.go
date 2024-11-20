@@ -8,7 +8,26 @@ import (
 
 // for循环字符串byte转string
 func testFor() string {
+
+	// 零切片
+	zeroSlice := make([]int, 0)
+	fmt.Printf("zeroSlice: %v, len: %d, cap: %d, is nil: %t\n", zeroSlice, len(zeroSlice), cap(zeroSlice), zeroSlice == nil)
+
+	// 空切片
+	var emptySlice []int = []int{}
+	fmt.Printf("emptySlice: %v, len: %d, cap: %d, is nil: %t\n", emptySlice, len(emptySlice), cap(emptySlice), emptySlice == nil)
+
+	// nil 切片
+	var nilSlice []int
+	fmt.Printf("nilSlice: %v, len: %d, cap: %d, is nil: %t\n", nilSlice, len(nilSlice), cap(nilSlice), nilSlice == nil)
+
 	s := "hello"
+
+	// string转byte数组
+	p := []byte(s)
+	z := string(p)
+	fmt.Println(z)
+
 	var arr []byte
 	// 字符串循环
 	for i := 0; i < len(s); i++ {
@@ -26,6 +45,14 @@ func testFor() string {
 func testSlice() {
 	/* 创建切片 */
 	numbers := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+
+	// go的slice可以直接用== 比较是否相等吗
+	arr11 := []int{1, 2}
+	arr22 := []int{1, 2}
+	//  不能直接用 == 比较
+	// if arr11 == arr22
+	fmt.Println(arr11)
+	fmt.Println(arr22)
 
 	// 因为arr[startIndex:endIndex]左闭右开
 	// 如果start和end相等的话那么
@@ -102,17 +129,20 @@ func inCre() func() int {
 func testDefer() {
 	defer func() {
 		if r := recover(); r != nil {
-			// 执行了
+			// 没有执行
 			fmt.Println(1)
 		}
 	}()
-	doSomething()
+	// 如果没有这个go的话，那么会打印一个1
+	// 如果有的话这个子协程里面的panic没有办法被捕获
+	go doSomething()
 	defer func() {
 		if r := recover(); r != nil {
 			// 没有执行
 			fmt.Println(2)
 		}
 	}()
+	time.Sleep(time.Second * 2)
 }
 
 func doSomething() {
@@ -135,4 +165,103 @@ func testRange() {
 		}()
 	}
 	wg.Wait()
+}
+
+type Book struct {
+	title string
+}
+
+func testGetPrivate() {
+	b := Book{title: "Go Programming"}
+	p := &b
+	// 显式解引用
+	fmt.Println((*p).title)
+}
+
+func deferNumber() {
+	var u User
+	fmt.Println("u.Name = ", u.Name)
+	x := 0
+	defer func() {
+		// 这里输出得结果是什么
+		// 这个x是引用 所以输出得是1
+		fmt.Println("deferred x:", x)
+	}()
+	x = 1
+	fmt.Println("Normal x:", x)
+
+	for i := 0; i < 3; i++ {
+		defer func(item int) {
+			// 函数调用 defer如果是显式值传入就是正确打印 2/1/0
+			fmt.Println(item)
+		}(i)
+
+		defer func() { // 函数调用
+			// 这里会统统打印为 3 也就是最后的值
+			fmt.Println("i = ", i)
+		}()
+	}
+}
+
+type User struct {
+	Name string
+}
+
+func testSwitch() {
+
+	/* 定义局部变量 */
+	var grade string = "B"
+	var marks int = 90
+
+	// case自带break
+	// 显式使用 fallthrough 可以多执行下面的case
+	switch marks {
+	case 90:
+		grade = "A"
+		// fallthrough
+	case 80:
+		grade = "B"
+	case 50, 60, 70:
+		grade = "C"
+	default:
+		grade = "D"
+	}
+	fmt.Printf("你的等级是 %s\n", grade)
+}
+
+// 字符串和rune数组的转换
+func testRuneTrans() {
+	s := "今天happy"
+	arr := []rune(s)
+	newStr := string(arr)
+	fmt.Println(newStr)
+
+	// 用单引号（'）包围的字符（如'a'）是一个rune类型的字面量
+	// rune类型实际上是int32的别名，用于表示一个 Unicode 码点。
+	// 小写字母a对应的十进制值是 97 所以z是97
+	var z int32
+	z = 'a'
+	fmt.Println(z)
+	fmt.Println(string(z))
+}
+
+func testMapper() {
+	m := map[string]int{}
+	// 下面的写法是错误的 m 是不能被寻址
+	// map的地址是没法获取的
+	// map是一种引用类型 m实际上是一个指向底层map数据结构的引用
+	// 不像数组等类型可以通过取地址操作符
+	// l := *m
+	fmt.Println(m)
+
+	arr := [1]int{10}
+	arr1 := &arr
+	// 这里直接通过数组指针可以改数组的值，不需要额外写 (*arr1)[0] = 3
+	arr1[0] = 2
+	(*arr1)[0] = 3
+	fmt.Println(arr1)
+
+	var newM map[string]int
+	// 这里会panic 因为newM还是nil
+	newM["name"] = 99
 }
