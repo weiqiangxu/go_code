@@ -251,7 +251,7 @@ func testMapper() {
 	// map的地址是没法获取的
 	// map是一种引用类型 m实际上是一个指向底层map数据结构的引用
 	// 不像数组等类型可以通过取地址操作符
-	// l := *m
+	// l := *m ???  写错了把兄弟，&才是取地址
 	fmt.Println(m)
 
 	arr := [1]int{10}
@@ -264,4 +264,85 @@ func testMapper() {
 	var newM map[string]int
 	// 这里会panic 因为newM还是nil
 	newM["name"] = 99
+}
+
+func testMapperDelete() {
+	myMap := &map[string]int{
+		"a": 1,
+		"b": 2,
+		"c": 3,
+	}
+	xx := (*myMap)["a"]
+	fmt.Println(xx)
+
+	// 可以对map取地址
+	newMap := map[string]interface{}{}
+	h := &newMap
+	v := (*h)["c"]
+	fmt.Println(v)
+	// youMap := map[string]int{}
+	// 这样会报语法错误
+	// if youMap == myMap
+	//for range myMap {
+	//	myMap["d"] = 2
+	//}
+	fmt.Println(myMap)
+}
+
+func testCopy() {
+	//创建切片
+	arr1 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	arr3 := make([]int, 2)
+
+	// arr3 = [1,2]
+	copy(arr3, arr1)
+	fmt.Println(arr3)
+}
+
+func testConst() {
+	const N = 100
+	var x int = N
+
+	const M int32 = 100
+	// 下面这个会异常
+	// var y int = M
+	fmt.Println(x)
+}
+
+type T struct{}
+
+func (t T) f(n int) T {
+	fmt.Print(n)
+	return t
+}
+
+func testPrint() {
+	var t T
+	// 不明白为什么打印132
+	defer t.f(1).f(2)
+	fmt.Print(3)
+}
+
+func testPrintRange() {
+	strs := []string{"one", "two", "three"}
+
+	for _, s := range strs {
+		go func() {
+			time.Sleep(1 * time.Second)
+			// range先跑完 获取到的都是最后一个item的地址
+			fmt.Printf("%s ", s)
+		}()
+	}
+	time.Sleep(3 * time.Second)
+}
+
+func testPrintInCre() {
+	v := 1
+	incr(&v)
+	fmt.Println(v)
+}
+
+func incr(p *int) int {
+	*p++
+	return *p
 }

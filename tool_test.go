@@ -160,3 +160,68 @@ func Test_testMapper(t *testing.T) {
 		})
 	}
 }
+
+func Test_testMapperDelete(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testMapperDelete()
+		})
+	}
+}
+
+func Test_testCopy(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testCopy()
+		})
+	}
+}
+
+func Test_testPrint(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testPrint()
+		})
+	}
+}
+
+func Test_testPrintRange(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testPrintRange()
+		})
+	}
+}
+
+func Test_testPrintInCre(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			testPrintInCre()
+		})
+	}
+}
