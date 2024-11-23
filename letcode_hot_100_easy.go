@@ -87,3 +87,37 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
 	return nil
 }
+
+// reverseList 反转链表-执行时间超时
+func reverseList(head *ListNode) *ListNode {
+	var preNode *ListNode
+	var curr *ListNode
+	for curr = head; curr != nil; {
+		// 记录下一个节点地址
+		next := curr.Next
+		// 当前节点的下一个节点地址替换成上一个节点
+		curr.Next = preNode
+		// 更新上一个节点为当前节点地址
+		preNode = curr
+		// 更新当前节点为下一个节点-继续遍历
+		curr = next
+	}
+	return preNode
+}
+
+// reverseList 反转链表-执行时间超时
+func reverseListSuccess(head *ListNode) *ListNode {
+	var prev *ListNode
+	curr := head
+	for curr != nil {
+		// 下一个节点
+		next := curr.Next
+		// 当前节点的Next指向上一个节点
+		curr.Next = prev
+		// 上一个节点指向当前节点
+		prev = curr
+		// 当前节点换成下一个节点
+		curr = next
+	}
+	return prev
+}

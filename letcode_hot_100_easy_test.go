@@ -99,3 +99,38 @@ func Test_getIntersectionNode(t *testing.T) {
 		})
 	}
 }
+
+func Test_reverseList(t *testing.T) {
+	var h = &ListNode{
+		Val: 1,
+		Next: &ListNode{
+			Val: 2,
+			Next: &ListNode{
+				Val:  3,
+				Next: nil,
+			},
+		},
+	}
+	type args struct {
+		head *ListNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want *ListNode
+	}{
+		{
+			name: "",
+			args: args{
+				head: h,
+			},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := reverseList(tt.args.head)
+			t.Log(got)
+		})
+	}
+}
