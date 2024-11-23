@@ -1,6 +1,7 @@
 package p1
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -130,6 +131,138 @@ func Test_reverseList(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := reverseList(tt.args.head)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_reverseListSuccess(t *testing.T) {
+	type args struct {
+		head *ListNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want *ListNode
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := reverseListSuccess(tt.args.head); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("reverseListSuccess() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_isPalindromeErr(t *testing.T) {
+	type args struct {
+		head *ListNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "",
+			args: args{
+				head: &ListNode{
+					Val: 1,
+					Next: &ListNode{
+						Val: 2,
+						Next: &ListNode{
+							Val: 2,
+							Next: &ListNode{
+								Val:  1,
+								Next: nil,
+							},
+						},
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "",
+			args: args{
+				head: &ListNode{
+					Val: 1,
+					Next: &ListNode{
+						Val: 2,
+						Next: &ListNode{
+							Val:  2,
+							Next: nil,
+						},
+					},
+				},
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isPalindromeErr(tt.args.head)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_isPalindrome(t *testing.T) {
+	// 这个结果是0 参数类型是int
+	tmp := 1 / 2
+	fmt.Println(tmp)
+	type args struct {
+		head *ListNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "",
+			args: args{
+				head: &ListNode{
+					Val: 1,
+					Next: &ListNode{
+						Val: 2,
+						Next: &ListNode{
+							Val: 2,
+							Next: &ListNode{
+								Val:  1,
+								Next: nil,
+							},
+						},
+					},
+				},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isPalindrome(tt.args.head)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_hasCycle(t *testing.T) {
+	type args struct {
+		head *ListNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := hasCycle(tt.args.head)
 			t.Log(got)
 		})
 	}

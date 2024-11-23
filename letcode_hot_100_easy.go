@@ -77,6 +77,9 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	// 这里是最精彩的
 	// 用的是链表节点的地址,注意是地址
 	vis := map[*ListNode]bool{}
+	// 注意这个条件是: tmp.Next
+	// 注意这个条件是: tmp.Next
+	// 注意这个条件是: tmp.Next
 	for tmp := headA; tmp != nil; tmp = tmp.Next {
 		vis[tmp] = true
 	}
@@ -120,4 +123,51 @@ func reverseListSuccess(head *ListNode) *ListNode {
 		curr = next
 	}
 	return prev
+}
+
+// isPalindromeErr 检查是否是回文链表
+// 这个是错误的,因为回文链表不代表是对称的
+// 比如 [1]是回文 [1,0,1]也是回文
+func isPalindromeErr(head *ListNode) bool {
+	var stack []int
+	for tmp := head; tmp != nil; tmp = tmp.Next {
+		if len(stack) == 0 {
+			stack = append(stack, tmp.Val)
+		} else {
+			if stack[len(stack)-1] == tmp.Val {
+				stack = stack[:len(stack)-1]
+			} else {
+				stack = append(stack, tmp.Val)
+			}
+		}
+	}
+	return len(stack) == 0
+}
+
+// isPalindrome 双指针(遍历前半部分,在数组的对称位置有相同的数值表示这是一个回文)
+func isPalindrome(head *ListNode) bool {
+	var arr []int
+	for tmp := head; tmp != nil; tmp = tmp.Next {
+		arr = append(arr, tmp.Val)
+	}
+	for i := 0; i < (len(arr) / 2); i++ {
+		if arr[i] != arr[len(arr)-1-i] {
+			return false
+		}
+	}
+	return true
+}
+
+// hasCycle 链表是否是环形
+func hasCycle(head *ListNode) bool {
+	// 重点是这个Node地址,一旦在后面遍历链表的时候出现一样的地址表示环形
+	mapper := map[*ListNode]bool{}
+	for tmp := head; tmp != nil; tmp = tmp.Next {
+		if _, exist := mapper[tmp]; exist {
+			return true
+		} else {
+			mapper[tmp] = true
+		}
+	}
+	return false
 }
