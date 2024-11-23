@@ -225,3 +225,16 @@ func Test_testPrintInCre(t *testing.T) {
 		})
 	}
 }
+
+func Test_deleteLast(t *testing.T) {
+	tests := []struct {
+		name string
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			deleteLast()
+		})
+	}
+}

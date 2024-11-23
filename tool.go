@@ -346,3 +346,13 @@ func incr(p *int) int {
 	*p++
 	return *p
 }
+
+func deleteLast() {
+	arr := []int{2}
+	arr1 := arr[:len(arr)-1]
+	fmt.Println(arr1)
+
+	arr = []int{2, 3, 4}
+	arr1 = arr[:len(arr)-1]
+	fmt.Println(arr1)
+}
