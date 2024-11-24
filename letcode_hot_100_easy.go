@@ -171,3 +171,283 @@ func hasCycle(head *ListNode) bool {
 	}
 	return false
 }
+
+// singleNumber 数组之中找出只出现了一次的数据
+// 按位异或-主要特性是两个相同的会抵消为0
+// 同样二进制最低位有5个数字 0 0 1 1 1
+// 最终就会变成1 不管怎么运算都会变成找出 奇数的那个位 0/1
+// 1^2^3^4^1^2^3 = 4
+func singleNumber(nums []int) int {
+	// 这个初始值的设定是很关键的
+	// 按位异或运算与 0 异或的特性
+	// 后续任何数与 0 进行按位异或运算都能得到该数本身
+	single := 0
+	for _, num := range nums {
+		// single 初始值为 0，根据与 0 异或特性，此时 single 变为 num
+		// 当第二次遇到 num 时，根据自反性特性，num ^ num = 0，所以 single 又变回了 0
+		single = single ^ num
+	}
+	return single
+}
+
+// majorityElement 找出数组之中多数的元素
+func majorityElement(nums []int) int {
+	mapper := map[int]int{}
+	for _, v := range nums {
+		if tmp, exist := mapper[v]; exist {
+			mapper[v] = tmp + 1
+		} else {
+			mapper[v] = 1
+		}
+	}
+	l := len(nums) / 2
+	for num, count := range mapper {
+		if count > l {
+			return num
+		}
+	}
+	return 0
+}
+
+// climbStairs 爬楼梯
+// f(0) = 1
+// f(1) = 1
+// f(2) = 2
+// f(3) = 3
+// f(4) = 5
+// ...
+// f(x) = f(x-1) + f(x-2) // 5 = 3 + 2
+func climbStairs(n int) int {
+	lastOfLast, last, result := 0, 0, 1
+	for i := 1; i <= n; i++ {
+		// 上一步f(x-1) 已经不再是上一步了, 而是上两步 f(x-2)
+		// 因为index向前推进了
+		lastOfLast = last
+		// 之前的结果 f(x)也就是 result
+		// 变成上一步 f(x-1)
+		last = result
+		// 将 f(x-2) + f(x-1)
+		result = lastOfLast + last
+	}
+	return result
+}
+
+// maxProfit 获取买卖股票的最佳时机
+// 这里主要是会出现运算时间太长
+func maxProfit(prices []int) int {
+	maxNum := 0
+	for index, value := range prices {
+		if index == len(prices)-1 {
+			break
+		}
+		for i := index + 1; i < len(prices); i++ {
+			tmp := value - prices[i]
+			if tmp > maxNum {
+				maxNum = tmp
+			}
+		}
+	}
+	return maxNum
+}
+
+// maxProfitSuccess 计算最大利润
+// 想要少循环就把最小值和最大利润都记录,在遍历的时候记录最小和最大
+func maxProfitSuccess(prices []int) int {
+	if len(prices) == 0 {
+		return 0
+	}
+
+	minPrice := prices[0]
+	maxProfit := 0
+
+	for _, price := range prices {
+		// 更新最低价格
+		if price < minPrice {
+			minPrice = price
+		} else {
+			// 计算当前价格与最低价格的差值，并更新最大利润
+			profit := price - minPrice
+			if profit > maxProfit {
+				maxProfit = profit
+			}
+		}
+	}
+
+	return maxProfit
+}
+
+// searchInsert 搜索插入位置
+func searchInsert(nums []int, target int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	targetIndex := 0
+	for index, value := range nums {
+		if value == target {
+			return index
+		} else {
+			if value > target {
+				targetIndex = index
+				break
+			} else {
+				// 如果小于这个targetIndex也需要往后挪动
+				targetIndex = index + 1
+			}
+		}
+	}
+
+	return targetIndex
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// inorderTraversal 二叉树的中序遍历
+// 中序遍历的顺序是先访问左子树，然后访问根节点，最后访问右子树
+// 这种遍历方式能够按照节点值的大小顺序（假设二叉树是二叉搜索树）
+func inorderTraversal(root *TreeNode) []int {
+	// 这里非常巧妙的用到了闭包的函数全局变量的概念
+	// result是共用的函数全局变量
+	var result []int
+	var inorder func(node *TreeNode)
+
+	inorder = func(node *TreeNode) {
+		if node == nil {
+			return
+		}
+
+		// 先递归遍历左子树
+		inorder(node.Left)
+
+		// 将当前节点的值添加到结果列表中
+		result = append(result, node.Val)
+
+		// 再递归遍历右子树
+		inorder(node.Right)
+	}
+
+	inorder(root)
+
+	return result
+}
+
+// maxDepth 获取树的最大深度
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+		// 每次遍历节点不释放,到下一个层级
+		// 直到层级节点是nil
+		return 0
+	}
+	// 每次递归都+1深度
+	// 并且每次都从左右子树选一个最深的
+	return getMax(maxDepth(root.Left), maxDepth(root.Right)) + 1
+}
+
+func getMax(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+// invertTree 翻转二叉树
+func invertTree(root *TreeNode) *TreeNode {
+	if root == nil {
+		// 直到节点为nil才释放
+		return nil
+	}
+	left := invertTree(root.Left)
+	right := invertTree(root.Right)
+	// 所谓翻转
+	root.Left = right
+	root.Right = left
+	// 一直子树开始往root走翻转
+	return root
+}
+
+func isSymmetric(root *TreeNode) bool {
+	return check(root.Left, root.Right)
+}
+
+// check 检查二叉树是否对称
+func check(p, q *TreeNode) bool {
+	if p == nil && q == nil {
+		return true
+	}
+	if p == nil || q == nil {
+		return false
+	}
+	return p.Val == q.Val && check(p.Left, q.Right) && check(p.Right, q.Left)
+}
+
+// diameterOfTree 函数用于计算二叉树的直径
+func diameterOfTree(root *TreeNode) int {
+	var maxDiameter int
+
+	var maxDepth func(node *TreeNode) int
+	maxDepth = func(node *TreeNode) int {
+		if node == nil {
+			return 0
+		}
+
+		// 递归计算左子树深度
+		leftDepth := maxDepth(node.Left)
+		// 递归计算右子树深度
+		rightDepth := maxDepth(node.Right)
+
+		// 更新最大直径
+		// 这里是最重要的,左子树的深度和右子树的深度,加起来,就是最大直径
+		maxDiameter = getMax(maxDiameter, leftDepth+rightDepth)
+
+		// 返回当前节点的最大深度（左右子树深度较大值 + 1）
+		return getMax(leftDepth, rightDepth) + 1
+	}
+
+	maxDepth(root)
+
+	return maxDiameter
+}
+
+// diameterOfBinaryTree 最长直径
+func diameterOfBinaryTree(root *TreeNode) (ans int) {
+	var dfs func(*TreeNode) int
+	dfs = func(node *TreeNode) int {
+		if node == nil {
+			return -1
+		}
+		lLen := dfs(node.Left) + 1  // 左子树最大链长+1
+		rLen := dfs(node.Right) + 1 // 右子树最大链长+1
+		ans = max(ans, lLen+rLen)   // 两条链拼成路径
+		return max(lLen, rLen)      // 当前子树最大链长
+	}
+	dfs(root)
+	return
+}
+
+// 有序数组转二叉搜索树
+func sortedArrayToBST(nums []int) *TreeNode {
+	return helper(nums, 0, len(nums)-1)
+}
+
+func helper(nums []int, left, right int) *TreeNode {
+	// 所有的树操作都是假定最小树怎么写的func
+	// 然后递归,直到一个条件的出现停止递归
+	if left > right {
+		return nil
+	}
+	// 取下标中间的(int/int会自动向下取整)
+	// (0+1)/2 = 0
+	// (0+2)/2 = 1
+	// (0+3)/2 = 1
+	mid := (left + right) / 2
+
+	// 组装root节点
+	root := &TreeNode{Val: nums[mid]}
+	// 相当于二分法
+	root.Left = helper(nums, left, mid-1)
+	root.Right = helper(nums, mid+1, right)
+	return root
+}

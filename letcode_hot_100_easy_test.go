@@ -267,3 +267,347 @@ func Test_hasCycle(t *testing.T) {
 		})
 	}
 }
+
+func Test_singleNumber(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				// 1^2^3^4^1^2^3 = 4
+				nums: []int{1, 2, 3, 4, 1, 2, 3},
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := singleNumber(tt.args.nums)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_majorityElement(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				nums: []int{1, 2, 3, 2, 2},
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := majorityElement(tt.args.nums)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_climbStairs(t *testing.T) {
+	type args struct {
+		n int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				n: 5,
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := climbStairs(tt.args.n)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_maxProfit(t *testing.T) {
+	type args struct {
+		prices []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				prices: []int{9, 1, 2, 3, 5},
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := maxProfit(tt.args.prices)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_maxProfitSuccess(t *testing.T) {
+	type args struct {
+		prices []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				prices: []int{1, 2, 3, 8, 9, 5},
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := maxProfitSuccess(tt.args.prices)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_searchInsert(t *testing.T) {
+	type args struct {
+		nums   []int
+		target int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				nums:   []int{1, 2, 3, 4},
+				target: 6,
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := searchInsert(tt.args.nums, tt.args.target)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_inorderTraversal(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		{
+			name: "",
+			args: args{
+				root: &TreeNode{
+					Val: 8,
+					Left: &TreeNode{
+						Val: 5,
+						Left: &TreeNode{
+							Val:   3,
+							Left:  nil,
+							Right: nil,
+						},
+						Right: &TreeNode{
+							Val:   6,
+							Left:  nil,
+							Right: nil,
+						},
+					},
+					Right: &TreeNode{
+						Val:   15,
+						Left:  nil,
+						Right: nil,
+					},
+				},
+			},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// 中序遍历:访问左然后中然后右
+			// 如果是搜索二叉树(有序)这样范围得到的结果是有序的
+			got := inorderTraversal(tt.args.root)
+			// [3 5 6 8 15]
+			t.Log(got)
+		})
+	}
+}
+
+func Test_maxDepth(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := maxDepth(tt.args.root); got != tt.want {
+				t.Errorf("maxDepth() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_invertTree(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want *TreeNode
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := invertTree(tt.args.root)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_isSymmetric(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := isSymmetric(tt.args.root)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_diameterOfTree(t *testing.T) {
+	root := &TreeNode{
+		Val: 1,
+		Left: &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
+				Val: 4,
+			},
+			Right: &TreeNode{
+				Val: 5,
+			},
+		},
+		Right: &TreeNode{
+			Val: 3,
+		},
+	}
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "",
+			args: args{
+				root: root,
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := diameterOfTree(tt.args.root)
+			t.Log(got)
+		})
+	}
+}
+
+func Test_diameterOfBinaryTree(t *testing.T) {
+	type args struct {
+		root *TreeNode
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantAns int
+	}{
+		{},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotAns := diameterOfBinaryTree(tt.args.root); gotAns != tt.wantAns {
+				t.Errorf("diameterOfBinaryTree() = %v, want %v", gotAns, tt.wantAns)
+			}
+		})
+	}
+}
+
+func Test_sortedArrayToBST(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want *TreeNode
+	}{
+		{
+			name: "",
+			args: args{
+				nums: []int{1, 2, 3, 4, 5},
+			},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := sortedArrayToBST(tt.args.nums)
+			t.Log(got)
+		})
+	}
+}
