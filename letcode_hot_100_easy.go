@@ -451,3 +451,84 @@ func helper(nums []int, left, right int) *TreeNode {
 	root.Right = helper(nums, mid+1, right)
 	return root
 }
+
+// addTwoNumbers 两数相加 l1 = [2,4,3], l2 = [5,6,4] = [7,0,8]
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	var n = &ListNode{}
+	var Link = n
+	carry := 0
+	for {
+		if l1 == nil && l2 == nil && carry == 0 {
+			break
+		}
+		a := 0
+		b := 0
+		if l1 != nil {
+			a = l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			b = l2.Val
+			l2 = l2.Next
+		}
+		sum := a + b + carry
+		n.Next = &ListNode{
+			Val: sum % 10,
+		}
+		n = n.Next
+		carry = sum / 10
+	}
+	return Link.Next
+}
+
+// longestPalindrome 最长回文子串
+func longestPalindrome(s string) string {
+	if s == "" {
+		return ""
+	}
+	start, end := 0, 0
+	for i := 0; i < len(s); i++ {
+		left1, right1 := expandAroundCenter(s, i, i)
+		left2, right2 := expandAroundCenter(s, i, i+1)
+		if right1-left1 > end-start {
+			start, end = left1, right1
+		}
+		if right2-left2 > end-start {
+			start, end = left2, right2
+		}
+	}
+	return s[start : end+1]
+}
+
+func expandAroundCenter(s string, left, right int) (int, int) {
+	for {
+		if right >= len(s) {
+			break
+		}
+		if left < 0 {
+			break
+		}
+		if s[left] != s[right] {
+			break
+		}
+		left, right = left-1, right+1
+	}
+	return left + 1, right - 1
+}
+
+// buildLink 构建链表
+func buildLink(list []int) *ListNode {
+	// 逆序不断构建Next指向的链表
+	var nextNode *ListNode
+	// 定义FirstNode
+	var firstNode *ListNode
+	for i := len(list) - 1; i >= 0; i-- {
+		item := &ListNode{
+			Val:  list[i],
+			Next: nextNode,
+		}
+		nextNode = item
+		firstNode = item
+	}
+	return firstNode
+}
