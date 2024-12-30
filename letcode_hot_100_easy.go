@@ -25,6 +25,7 @@ func isValid(s string) bool {
 	mapper['{'] = '}'
 	mapper['['] = ']'
 	mapper['('] = ')'
+
 	for _, item := range arr {
 		if len(stack) == 0 {
 			// 长度为0也入栈
